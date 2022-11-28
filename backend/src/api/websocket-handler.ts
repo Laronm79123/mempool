@@ -464,7 +464,9 @@ class WebsocketHandler {
       }
     }
 
-    await mempool.$saveTxFirstSeenTimes(transactions, _memPool);
+    if (config.MEMPOOL.TRANSACTION_INDEXING) {
+      await mempool.$saveTxFirstSeenTimes(transactions, _memPool);
+    }
 
     // Update mempool to remove transactions included in the new block
     for (const txId of txIds) {
