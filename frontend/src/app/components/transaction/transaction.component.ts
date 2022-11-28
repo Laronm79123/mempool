@@ -109,7 +109,7 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         switchMap((txId) =>
           this.apiService
-            .getCpfpinfo$(txId)
+            .getTransactionExtras$(txId)
             .pipe(retryWhen((errors) => errors.pipe(delay(2000))))
         )
       )
@@ -141,6 +141,9 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
           this.stateService.markBlock$.next({
             txFeePerVSize: this.tx.effectiveFeePerVsize,
           });
+        }
+        if (cpfpInfo.firstSeen) {
+          this.transactionTime = cpfpInfo.firstSeen;
         }
         this.cpfpInfo = cpfpInfo;
       });
